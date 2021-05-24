@@ -12,10 +12,9 @@ namespace Programming_Assignment_2_Summer_2021
             Console.WriteLine("Question 1");
             int[] nums1 = { 2, 5, 1, 3, 4, 7 };
             int[] nums2 = { 2, 1, 4, 7 };
-            int[] inter= Intersection(nums1, nums2);
-            foreach(var x in inter)
-            Console.Write(x+"\t");
+            Intersection(nums1, nums2);
             Console.WriteLine("");
+
             //Question 2 
             Console.WriteLine("Question 2");
             int[] nums = { 0, 1, 0, 3, 12 };
@@ -102,17 +101,14 @@ namespace Programming_Assignment_2_Summer_2021
         //Example 2:
         //Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
         //Output: [9,4]
+        //
         /// </summary>
 
-        public static int[] Intersection(int[] nums1, int[] nums2)
+        public static void Intersection(int[] nums1, int[] nums2)
         {
             try
             {
                 //write your code here.
-                //Below inter array used so that code doesn't show error you can use same array or create a new one
-                int[] inter= { 0, 0, 0,0 };
-                
-                return inter;
             }
             catch (Exception)
             {
