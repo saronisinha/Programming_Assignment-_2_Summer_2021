@@ -14,20 +14,22 @@ namespace Programming_Assignment_2_Summer_2021
             int[] nums2 = { 2, 1, 4, 7 };
             Intersection(nums1, nums2);
             Console.WriteLine("");
+            Console.ReadLine();
 
             //Question 2 
             Console.WriteLine("Question 2");
             int[] nums = { 0, 1, 0, 3, 12 };
             Console.WriteLine("Enter the target number:");
+            //int target = int.Parse(Console.ReadLine());
             int target = Int32.Parse(Console.ReadLine());
-            int pos=SearchInsert(nums,target);
+            int pos = SearchInsert(nums, target);
             Console.WriteLine("Insert Position of the target is : {0}", pos);
             Console.WriteLine("");
 
             //Question3
             Console.WriteLine("Question 3");
             int[] ar3 = { 1, 2, 3, 1, 1, 3 };
-            int Lnum=LuckyNumber(ar3);
+            int Lnum = LuckyNumber(ar3);
             if (Lnum == -1)
                 Console.WriteLine("Given Array doesn't have any lucky Integer");
             else
@@ -80,14 +82,14 @@ namespace Programming_Assignment_2_Summer_2021
             Console.WriteLine("Question 9");
             int[] arr9 = { 7, 1, 5, 3, 6, 4 };
             int Ms = MaximumSum(arr9);
-            Console.WriteLine("Maximun Sum contiguous subarray {0}", Ma);   
+            Console.WriteLine("Maximun Sum contiguous subarray {0}", Ms);
             Console.WriteLine();
 
             //Question 10
             Console.WriteLine("Question 10");
             int[] costs = { 10, 15, 20 };
-            int minCost=MinCostToClimb(costs);
-            Console.WriteLine("Minium cost to climb the top stair {0}", minCost);
+            int minCost = MinCostToClimb(costs);
+            Console.WriteLine("Minimum cost to climb the top stair {0}", minCost);
             Console.WriteLine();
         }
 
@@ -108,11 +110,22 @@ namespace Programming_Assignment_2_Summer_2021
         {
             try
             {
-                //write your code here.
+                //intersection of two arrays
+                int[] intersection = nums1.Intersect(nums2).ToArray();
+                //handling case for no common elements
+                if (intersection.Length == 0)
+                    Console.WriteLine("No matches found");
+                else
+                {
+                    Console.Write(intersection[0]);
+                    for (int i = 1; i < intersection.Length; i++)
+                        Console.Write(", {0}", intersection[i]);
+                    Console.Read();
+                }
             }
             catch (Exception)
             {
-
+                Console.WriteLine("Exception occured in Intersection function\n");
                 throw;
             }
         }
@@ -139,12 +152,33 @@ namespace Programming_Assignment_2_Summer_2021
         {
             try
             {
-                //Write your Code here.
-                return -1;
+                int start = 0;
+                int end = nums.Length - 1;
+                while (start <= end)
+                {
+                    int mid = (start + end) / 2;
+                    //comparing value
+                    if (nums[mid] == target)
+                        return mid;
+
+                    else if (nums[mid] < target)
+                        //shift start pointer to greater value than nums[mid]
+                        start = mid + 1;
+
+                    else
+                        ////shift end pointer to lesser value than nums[mid]
+                        end = mid - 1;
+                }
+
+                //returns the insert position
+                return end + 1;
             }
-            catch(Exception)
+            catch (Exception)
             {
+                Console.WriteLine("Exception occured in SearchInsert function\n");
+                return -1;
                 throw;
+
             }
         }
 
@@ -163,12 +197,46 @@ namespace Programming_Assignment_2_Summer_2021
         {
             try
             {
-                //write your code here.
-                return -1;
+                Dictionary<int, int> frequency = new Dictionary<int, int>();
+                //checking the constraints
+                if (nums.Length >= 1 && nums.Length <= 500)
+                {
+                    foreach (int x in nums)
+                    {
+                        //checking the constraints
+                        if (x <= 500)
+                        {
+                            if (frequency.ContainsKey(x))
+                                frequency[x]++;
+                            else
+                                frequency.Add(x, 1);
+                        }
+                        else
+                            //throwing exception for not satisfying constraints
+                            throw new Exception();
+                    }
+
+                    int luckyNum = -1;
+
+                    foreach (var n in frequency.Keys)
+                    {
+                        // checking if the number is equal to its frequency
+                        //and if the value is greater than the previously stored value
+                        if (n == frequency[n] && n > luckyNum)
+                            luckyNum = n;
+                    }
+
+                    return luckyNum;
+                }
+                else
+                    //throwing exception for not satisfying constraints
+                    throw new Exception();
+
             }
             catch (Exception)
             {
-
+                Console.WriteLine("Constraints violated:Exception occurred in LuckyNumber funtion\n");
+                return -1;
                 throw;
             }
         }
@@ -180,7 +248,7 @@ namespace Programming_Assignment_2_Summer_2021
         //•	nums[1] = 1
         //•	nums[2 * i] = nums[i]  when 2 <= 2 * i <= n
         //•	nums[2 * i + 1] = nums[i] + nums[i + 1] when 2 <= 2 * i + 1 <= n
-       // Return the maximum integer in the array nums.
+        // Return the maximum integer in the array nums.
 
         //Example 1:
         //Input: n = 7
@@ -197,16 +265,35 @@ namespace Programming_Assignment_2_Summer_2021
         //Hence, nums = [0, 1, 1, 2, 1, 3, 2, 3], and the maximum is 3.
 
         /// </summary>
-        private static int  GenerateNums(int n)
+        private static int GenerateNums(int n)
         {
             try
             {
-                //write your code here.
-                return -1;
+                //checking constraints
+                if (n >= 0 && n <= 100)
+                {
+                    int[] nums = new int[n + 1];
+                    nums[0] = 0;
+                    nums[1] = 1;
+                    int nlen = n / 2;
+                    for (int i = 1; i <= nlen; i++)
+                    {
+                        if ((2 * i) < n + 1)
+                            nums[2 * i] = nums[i];
+                        if (((2 * i) + 1) < n + 1)
+                            nums[(2 * i) + 1] = nums[i] + nums[i + 1];
+                    }
+                    int maxnum = nums.Max();
+                    return maxnum;
+                }
+                else
+                    throw new Exception();
+
             }
             catch (Exception)
             {
-
+                Console.WriteLine("Constraints violated: Exception occurred in GenerateNums funtion\n");
+                return -1;
                 throw;
             }
 
@@ -225,12 +312,22 @@ namespace Programming_Assignment_2_Summer_2021
         {
             try
             {
-                //write your code here.
-                return "";
+                List<string> list = new List<string>();
+                foreach (var element in paths)
+                {
+                    list.Add(element[1]);
+                }
+                foreach (var path in paths)
+                {
+                    if (list.Contains(path[0]))
+                    {
+                        list.Remove(path[0]);
+                    }
+                }
+                return (list.Last());
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -246,17 +343,38 @@ namespace Programming_Assignment_2_Summer_2021
         //Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
 
         /// </summary>
-        private static void targetSum(int[] nums,int target)
+        private static void targetSum(int[] nums, int target)
         {
             try
             {
-                //write your code here.
-
+                int left = 0;
+                int right = nums.Length - 1;
+                if (nums.Length >= 2 && nums.Length <= 3 * 104)
+                {
+                    while (left < right)
+                    {
+                        if (nums[left] >= -1000 && nums[left] <= 1000 && nums[right] >= -1000 && nums[right] <= 1000)
+                        {
+                            if ((nums[left] + nums[right]) < target)
+                                left++;
+                            else if ((nums[left] + nums[right]) > target)
+                                right--;
+                            else if ((nums[left] + nums[right]) == target)
+                                break;
+                        }
+                        else
+                            throw new Exception();
+                    }
+                    Console.WriteLine("{0},{1}", left + 1, right + 1);
+                    Console.ReadLine();
+                }
+                else
+                    throw new Exception();
             }
             catch (Exception)
             {
-
-                throw;
+                Console.WriteLine("Constraint violated:Exception occurred in targetSum function\n");
+                //throw;
             }
         }
 
@@ -285,12 +403,41 @@ namespace Programming_Assignment_2_Summer_2021
         {
             try
             {
-                //write your code here.
+                List<int[]> list = new List<int[]>();
+                List<int[,]> result = new List<int[,]>();
+                for (int i = 0; i < items.GetLength(0); i++)
+                {
+                    //adding the elements to list
+                    list.Add(new int[] { items[i, 0], items[i, 1] });
+                }
+                //sorting the elements
+                list.Sort((p, q) => { return (p[0] < q[0]) ? -1 : ((p[0] == q[0]) ? ((p[1] <= q[1]) ? 1 : -1) : 1); });
+                int a = list[0][0];
+                int count = 1;
+                int sum = list[0][1];
+                for (int i = 1; i < list.Count; i++)
+                {
+                    if (list[i][0] == a && count < 5)
+                    {
+                        sum += list[i][1];
+                        count += 1;
+                    }
+                    else if (list[i][0] != a)
+                    {
 
+                        result.Add(new int[,] { { a, sum / 5 } });
+                        Console.Write("[[" + a + "," + sum / 5 + "]" + ",");
+                        a = list[i][0];
+                        count = 1;
+                        sum = list[i][1];
+                    }
+                }
+                result.Add(new int[,] { { a, sum / 5 } });
+                Console.Write("[" + a + "," + sum / 5 + "]]");
+                Console.Write("\n");
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -314,17 +461,47 @@ namespace Programming_Assignment_2_Summer_2021
         //rotate 2 steps to the right: [3,99,-1,-100]
         /// </summary>
 
-        private static void RotateArray(int[] arr,int n)
+        private static void RotateArray(int[] arr, int n)
         {
             try
             {
-                //write your code here.
-           
+                var loopindex = 0;
+                var currentindex = 0;
+                var current = arr[currentindex];
+                //checking constraints
+                if (arr.Length >= 1 && arr.Length <= 105 && n >= 0 && n <= 105)
+                {
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        //checking constraints
+                        if (arr[i] >= -231 && arr[i] <= 230)
+                        {
+                            currentindex = (currentindex + n) % arr.Length;
+
+                            // replacing current index with next index using temp variable
+                            var temp = arr[currentindex];
+                            arr[currentindex] = current;
+                            current = temp;
+
+                            if (currentindex == loopindex)
+                            {
+                                currentindex = (++loopindex) % arr.Length;
+                                current = arr[currentindex];
+                            }
+                        }
+                        else
+                            throw new Exception();
+                    }
+                    Console.WriteLine(String.Join(",", arr));
+
+                }
+                else
+                    throw new Exception();
             }
             catch (Exception)
             {
-
-                throw;
+                Console.WriteLine("Constraints violated:Exception occurred in RotateArray function\n");
+                //throw;
             }
         }
 
@@ -338,8 +515,8 @@ namespace Programming_Assignment_2_Summer_2021
         //Example 2:
         //Input: nums = [1]
         //Output: 1
-       // Example 3:
-       // Input: nums = [5,4,-1,7,8]
+        // Example 3:
+        // Input: nums = [5,4,-1,7,8]
         //Output: 23
         /// </summary>
 
@@ -347,12 +524,30 @@ namespace Programming_Assignment_2_Summer_2021
         {
             try
             {
-                //write your code here.
-                return 0;
+                //checking constraints
+                if (arr.Length >= 1 && arr.Length <= 30000)
+                {
+                    var max1 = arr[0];
+                    var max2 = arr[0];
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        if (arr[i] >= -100000 && arr[i] <= 100000)
+                        {
+                            max2 = Math.Max(arr[i], max2 + arr[i]);
+                            max1 = Math.Max(max1, max2);
+                        }
+                        else
+                            throw new Exception();
+                    }
+                    return max1;
+                }
+                else
+                    throw new Exception();
             }
             catch (Exception)
             {
-
+                Console.WriteLine("Constraint Violated:Exception occurred in MaximumSum function\n");
+                return 0;
                 throw;
             }
         }
@@ -373,13 +568,31 @@ namespace Programming_Assignment_2_Summer_2021
         {
             try
             {
-                //write your code here.
-                return 0;
-
+                int n = costs.Length;
+                if (n == 0)
+                    return 0;
+                else if (n == 1)
+                    return costs[0];
+                else if (n <= 1000)
+                {
+                    for (int i = 2; i < n; i++)
+                    {
+                        //handling constraints
+                        if (costs[i] >= 0 && costs[i] <= 999)
+                            //calculating the minimum cost
+                            costs[i] = Math.Min(costs[i - 1], costs[i - 2]) + costs[i];
+                        else
+                            throw new Exception();
+                    }
+                    return Math.Min(costs[n - 2], costs[n - 1]);
+                }
+                else
+                    throw new Exception();
             }
             catch (Exception)
             {
-
+                Console.WriteLine("Constraints violated:Exception occurred in MinCostToClimb function\n");
+                return 0;
                 throw;
             }
         }
